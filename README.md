@@ -6,11 +6,7 @@ which was accepted to the CANOPIE-HPC 2025 workshop at SC25.
 
 ## Contents
 
-This repos contains the following artifacts.
-
-1. Latex source and figures for the paper which will be published as part of the proceedings.
-2. Proof-of-concept code for the major concepts described in the paper including the PAM module and Kubernetes-based approaches.
-
+This repos contains proof-of-concept code for the major concepts described in the paper including the PAM module and Kubernetes-based approaches.
 
 ## Usage
 
