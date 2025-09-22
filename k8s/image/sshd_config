@@ -1,0 +1,16 @@
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+ClientAliveInterval 40
+ClientAliveCountMax 15
+AcceptEnv CE_SESSION
+PubkeyAuthentication yes
+HostkeyAlgorithms +ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+MaxAuthTries 10
+LogLevel INFO
+
+
+Match User *,!root
+	PubkeyAuthentication yes
+	ForceCommand /usr/bin/connect
+

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: default
+    app.kubernetes.io/name: ce
+  name: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: default
+      app.kubernetes.io/name: ce
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: default
+        app.kubernetes.io/name: ce
+    spec:
+      containers:
+      - args:
+        - infinity
+        command:
+        - sleep
+        env:
+        - name: USER
+          value: user1
+        - name: HOME
+          value: /tmp
+        image: ubuntu:22.04
+        imagePullPolicy: IfNotPresent
+        name: login
+        securityContext:
+          appArmorProfile:
+            type: Unconfined
+          runAsUser: 1001
+          runAsGroup: 1001
+          seccompProfile:
+            type: Unconfined
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        workingDir: /tmp
+      dnsConfig:
+        searches:
+        - default.svc.cluster.local
+      dnsPolicy: ClusterFirst
+      hostname: login

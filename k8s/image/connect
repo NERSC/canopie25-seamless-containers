@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ -z $CE_SESSION ] ; then
+  SESS=default
+else
+  SESS=$CE_SESSION
+fi
+
+if [[ "$SESS" == "baremetal" ]] ; then
+	echo "Using baremetal"
+	if [ ! -z "$SSH_ORIGINAL_COMMAND" ] ; then
+		eval $SSH_ORIGINAL_COMMAND
+		exit
+	fi
+	exec /bin/bash -il
+fi
+
+sudo /create $SESS
+
+kubectl wait --for=condition=available deploy/$SESS > /dev/null
+
+if [ ! -z "$SSH_ORIGINAL_COMMAND" ] ; then
+		kubectl exec -i deploy/$SESS -c login -- $SSH_ORIGINAL_COMMAND
+		exit
+fi
+exec kubectl exec -it deploy/$SESS -c login -- bash -l

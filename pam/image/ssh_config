@@ -1,0 +1,11 @@
+StrictHostKeyChecking accept-new
+
+Host default
+    Hostname localhost
+    User ubuntu
+    IdentityFile /default
+
+Host ubuntu24
+    Hostname localhost
+    User ubuntu
+    IdentityFile /ubuntu24

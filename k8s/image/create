@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#
+# PoC script to initialize a namespace
+# and create a session for a user
+
+SESSION=$1
+# Go up three levels to get the user (this is a hack)
+P=$(ps -o ppid= -p $$)
+P=$(ps -o ppid= -p $P)
+P=$(ps -o ppid= -p $P)
+USER=$(ps -o user= $P)
+if [ "$USER" = "root" ] ; then
+	echo "Failed to get user name"
+	exit
+fi
+echo "Creating session $SESSION for $USER"
+. /etc/kube.env
+
+CONFIG=/home/$USER/.kube/config
+if [ ! -e /home/$USER/.kube ] ; then
+	mkdir /home/$USER/.kube
+	kubectl config --kubeconfig $CONFIG set-cluster cluster --server https://${KUBERNETES_SERVICE_HOST}/ --insecure-skip-tls-verify=true > /dev/null
+	kubectl config --kubeconfig $CONFIG set-context default --cluster cluster --namespace ${USER} --user ${USER} > /dev/null
+	kubectl config --kubeconfig $CONFIG use-context default > /dev/null
+	chown -R $USER /home/$USER/.kube
+fi
+
+TOKEN=$(kubectl create token ce-$USER --namespace $USER --duration 1h)
+kubectl config --kubeconfig $CONFIG set-credentials ${USER} --token $TOKEN
+kubectl get -n $USER deploy/$SESSION > /dev/null 2>&1
+if [ $? -ne 0 ] ;then
+	echo "Creating pod"
+	kubectl apply -n $USER -f /$SESSION.yaml > /dev/null
+fi

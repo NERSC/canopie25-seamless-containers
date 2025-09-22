@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: login
+  name: login
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: login
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: login
+    spec:
+      containers:
+        - image: login:latest
+          name: login
+          env:
+            - name: TEMPLATES_DIR
+              value: /templates
+          ports:
+            - containerPort: 22
+          resources: {}
+          imagePullPolicy: IfNotPresent
+      hostname: login
+      restartPolicy: Always
+      serviceAccountName: creator

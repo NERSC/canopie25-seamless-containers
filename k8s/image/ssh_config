@@ -1,0 +1,12 @@
+StrictHostKeyChecking accept-new
+
+Host default
+    Hostname localhost
+    User user1
+    IdentityFile /root/.ssh/user1
+
+Host ubuntu24
+    Hostname localhost
+    SetEnv CE_SESSION=ubuntu24
+    User user1
+    IdentityFile /root/.ssh/user1
