@@ -1,6 +1,6 @@
 # Seamless end-to-end containerized HPC environments 
 
-This repo (https://github.com/NERSC/canopie25-seamless-containers-paper) contains artifacts for the paper 
+This repo (https://github.com/NERSC/canopie25-seamless-containers) contains artifacts for the paper 
 Seamless end-to-end containerized HPC environments
 which was accepted to the CANOPIE-HPC 2025 workshop at SC25.
 
